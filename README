@@ -1,0 +1,34 @@
+Newspipe v1.1.9
+by Ricardo M. Reyes
+http://newspipe.sourceforge.net
+
+
+1. What is it?
+Newspipe is an aplication that allows you to download news feeds (RSS or Atom) 
+and send the items included in those feeds to an email account, from where you 
+can read and organize them with your mail client of choice.
+
+
+2. License
+Newspipe is licensed under GNU Public License (GPL) terms
+http://www.gnu.org/licenses/gpl.html
+
+
+3. Installation
+Copy all the files to an appropriated directory, and edit the .ini and .opml files
+to reflect your environment and feed subscriptions. See the file manual.html for details.
+
+
+4. Running
+Just run the newspipe.py script using your Python interpreter.
+
+
+5. Contacting the author
+Any comments, suggestions or bug reports are welcome at reyesric@ufasta.edu.ar
+You can also send bugfixes if you want.
+
+
+6. Distribution
+You are free to use, modify and distribute this program freely, as long as you
+don't change or delete the name and contact information of the author.
+

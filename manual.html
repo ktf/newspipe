@@ -1,0 +1,713 @@
+<html>
+<head>
+<meta name="version" value="$Id: manual.html,v 1.31 2005/07/18 00:23:28 reyesric Exp $">
+<style>
+BODY { font-family: Arial, Helvetica, sans serif; }
+
+H1 { font-size: 30pt; padding-top: 18pt; font-weight: bold; font-family: Courier New, Courier, fixed;}
+H2 { font-size: 14pt; padding-top: 14pt; }
+H3 { font-size: 12pt; padding-top: 12pt; }
+P, TH, LI { font-size: 10pt; text-align: justify;}
+LI { padding: 2px; }
+TH { border-bottom: 2px solid #6080d0; padding: 6px; }
+TD { font-size: 9pt; vertical-align: top; text-align: left; padding: 4px;}
+TR.odd { background-color: #d8e6ff; }
+TT, .fixed { font-family: Courier New, Courier, fixed; }
+.fixed { font-weight: bold; }
+.flat { text-align: center; background-color: #d0e0ff; border: 0px solid #8080d0; border-spacing: 0px; }
+.release { font-weight: bold; color: #990000; list-style: none; padding-top: 12pt;}
+.release_text { font-weight: normal; color: black; }
+.toc {float: right; background-color: #d8e6ff; padding: 10px; margin-left: 10pt;}
+.toc h2 { padding-top: 0pt;font-size: 12pt;}
+.toc ul {list-style: none; margin-left: 0;}
+.toc, .toc p {text-align: center;}
+.toc li {font-size: 9pt; }
+.opmlcode {font-family: Courier New, Courier, fixed; }
+.opmlcode tt {color: #990000;}
+.opmlcode .tag {color: #990000; font-weight: bold}
+.opmlcode .attr {color: #0000ee;}
+.opmlcode .text {color: #006666;}
+</style>
+<title>Newspipe</title>
+</head>
+<body>
+
+<div class="header">
+	<H1><img src="newspipe.jpg" align=absmiddle>&nbsp; Newspipe</H1>
+</div>
+
+<div class="toc">
+<h2>Table of Contents</h2>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#features">Features</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#downloads">Downloads</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#mailheaders">Mail Headers</a></li>
+<li><a href="#acknowledgements">Acknowledgements</a></li>
+<li><a href="#contact">Contact</a></li>
+<li><a href="#references">References</a></li>
+<li><a href="#changelog">Changelog</a></li>
+</ul>
+<br>
+<a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=114820&amp;type=2" width="125" height="37" border="0" alt="SourceForge.net Logo" /></a>
+<br>
+<p> 
+<a href="http://sourceforge.net/export/rss2_projnews.php?group_id=114820&rss_fulltext=1"><IMG src="http://images.sourceforge.net/images/xml.png" border="0" alt="RSS Feed Available" width="36" height="14"></a> (new releases)
+</p>
+<p><a href="http://sourceforge.net/projects/newspipe">Newspipe's Home<br>at Sourceforge.net</a></p>
+</div>
+
+<div class="main">
+
+
+<a name="introduction"></a>
+<H2>Introduction</H2>
+
+<p><tt>Newspipe</tt> is an <a href="#rss">RSS</a>/<a href="#atom">Atom</A> aggregator with a difference: It allows you to keep track of your feeds through e-mail - you create an <a href="#opml">OPML</a> file listing your feeds and <tt>Newspipe</tt> will collect them, convert them to e-mail messages and send them to your mailbox.</p>
+<p>This means you can read, organize and archive news feeds using your current mail client (or even webmail), without needing to use a separate program. <tt>Newspipe</tt> can send you news items as plaintext or <tt>HTML</tt> mail, both as single items or grouped in a digest.</p>
+
+<p><tt>Newspipe</tt> is the creation of <a href="#contact">Ricardo M. Reyes</a>, and started out as an <a href="#rss">RSS</a>-to-<tt>POP3</tt> converter called <tt>rss2pop3</tt>. Over time, it grew to the extent where real-time collection via <tt>POP3</tt> wasn't flexible enough, and it was retooled to work via <tt>SMTP</tt>.
+
+<br>
+<a name="features"></a>
+<H2>Features</H2>
+
+<ul>
+<li>Supports <a href="#rss">RSS</a> and <a href="#atom">Atom</a> feeds through <a href="http://www.diveintomark.org/">Mark Pilgrim's</a> <a href="http://www.feedparser.org/">Universal Feed Parser</a></li>
+<li>feeds are listed in an <a href="#opml">OPML</a> file:</li>
+<ul>
+<li>feed options can be set individually for each feed or for a group of feeds</li>
+<li>supports screen-scraping scripts via an internal <tt>pipe://</tt> URI schema</li>
+<li>the <a href="#opml">OPML</a> file can reside locally (in your hard disk) or remotely (in a web server).</li>
+</ul>
+<li>sends news items via <tt>SMTP</tt> to a designated e-mail address</li>
+<ul>
+<li>messages can be in <tt>HTML</tt>/multipart <tt>MIME</tt> format or plaintext</li>
+<li>multiple items from a feed can be grouped and sent in a digest message</li>
+<li>updated news items are detected and re-sent with <font color="#337700"><b>additions</b></font> and <font color="#FF0000"><STRIKE>deletions</STRIKE></font> highlighted</li>
+<li>images linked from the feed items are downloaded and included as inline images inside the mail message (great for archiving purposes).
+<li>a mobile (text-only) view of a feed can be sent to a secondary e-mail address (to read on a PDA or an MMS-enabled mobile phone)</li>
+</ul>
+<li>full support for HTTP optimizations like <tt>gzip</tt> compression, <tt>If-Modified-Since</tt> and <tt>If-None-Match</tt> headers. Feeds and image files will only be downloaded when they have changed.</li>
+<li>E-mail "threading" based on previously sent <a href="#rss">RSS</a> items.</li>
+</ul>
+
+<a name="requirements"></a>
+<H2>Requirements</H2>
+<p>To use <tt>Newspipe</tt>, you need:</p>
+
+<ul>
+<li><a href="http://www.python.org">Python</a> 2.3 or above</li>
+<li>access to an <tt>SMTP</tt> server</li>
+<li>a mail client (preferably one capable of displaying <tt>HTML</tt> mail)</li>
+</ul>
+
+<p>All the required <a href="http://www.python.org">Python</a> modules and libraries are included in the distribution archive.</p>
+
+<p><tt>Newspipe</tt> has so far been successfully tested on:</p>
+<ul>
+<li>Windows (plain and <a href="http://www.cygwin.com">Cygwin</a>)</li>
+<li>Linux (several distros)</li>
+<li>Mac OS X (10.3.x)</li>
+</ul>
+
+<a name="downloads"></a>
+<H2>Download</H2>
+
+<p>You can download the latest stable version from <a href="http://sourceforge.net/project/showfiles.php?group_id=114820&package_id=124374">the files section</a>.</p>
+
+<p>If you would like to try the latest version and you have a CVS client, you are welcome to download it from the CVS repository (module <tt>newspipe</tt> at <tt>cvs.sourceforge.net:/cvsroot/newspipe</tt>). You can also <a href="http://cvs.sourceforge.net/viewcvs.py/newspipe/newspipe/">browse</a> the latest source code through the SourceForge <tt>viewcvs</tt> interface.</p>
+
+<a name="installation"></a>
+<H2>Installation</H2>
+
+<p>To install <tt>Newspipe</tt>, just unzip the files you downloaded to a new folder, and edit the file Newspipe.ini. The only parameters you absolutely need to edit are <tt>smtp_server</tt> and <tt>opml</tt>: </p>
+
+<ul>
+<li><tt>smtp_server</tt> should have the address of the mail server you'll use to send the emails. Here you can use the network name of the server, or the IP address. If you intend to use a local server that runs on your machine, use the address 127.0.0.1 </li>
+
+<li><tt>opml</tt> should point to your OPML file that lists the feeds you are subscribed to. If your are currently using another aggregator, it probably has an option or command to export your subscription list. If not, you can start a new file editing the <tt>test.ompl</tt> included in the .zip file you downloaded. </li>
+</ul>
+
+<p>Make sure that the <tt>ownerName</tt> and <tt>ownerEmail</tt> options at the top of the OPML file are correct. They should show your name and email address, and <tt>Newspipe</tt> will use them to form the recipient of the emails. You can address the emails to multiple recipients by separating them with commas. (<tt>For example: &lt;ownerEmail&gt;first@example.com, second@example.com&lt;/ownerEmail&gt;</tt>)</p>
+
+<p>You can also set the optional tags <tt>fromName</tt> and <tt>fromEmail</tt> to control the originating address of the emails. If you don't, <tt>Newspipe</tt> will try to form the originating address with the feed's name and the author's email.</p>
+
+<p>Once the configuration files are set, just execute the script <tt>Newspipe.py</tt>. In Windows, it's usually enough to double-click on it, or you can create a shortcut to it. In Unix/Linux, run it trough Python's interpreter, with the command: <tt> python Newspipe.py </tt> (assuming Python binaries are in the search PATH).
+
+<a name="configuration"></a>
+<H2>Configuration</H2>
+
+<p>There are two main sets of configuration options program-wide options set via a .INI file, and per-feed options set inside the <a href="#opml">OPML</a> file.</p> 
+
+<p>By default, <tt>Newspipe</tt> will look for the .ini file in the same folder where it's installed, but you can control the location of the ini file using the command line parameter: <tt>-i</tt> </p>
+
+<p>Every parameter set in the .ini file can be overrided using command-line parameters. Execute <tt>Newspipe.py --help</tt> to see the list of available parameters</p>
+
+<H3>.INI file Options</H3>
+
+<table class="flat">
+  <tr>
+    <th>Key</th><th>Default</th><th>Notes</th>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">opml</td>
+    <td><i>None</i></td>
+    <td>REQUIRED - the filename or URL of the <a href="#opml">OPML</a> file with the list of feeds to check</td>
+  </tr>
+  <tr>
+    <td class="fixed">smtp_server</td>
+    <td><i>None</i></td>
+    <td>REQUIRED - fully qualified domain name or IP address of the <tt>SMTP</tt> server to send messages through</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">sender</td>
+    <td><i>None</i></td>
+    <td>optional e-mail address to use as <tt>From:</tt> - overrides the OPML <tt>ownerEmail</tt> field.</td>
+  </tr>
+  <tr>
+    <td class="fixed">textonly</td>
+    <td>0</td>
+    <td>if set to 1, all the messages sent by <tt>Newspipe</tt> will be sent in plaintext format, without any HTML. The plaintext version is formatted in <a href="#markdown">Markdown</a> and includes references to all links, images, etc.</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">log_console</td>
+    <td>0</td>
+    <td>If set to 1, this will send logging output to the console <i>and</i> to the log file.</td>
+  </tr>
+  <tr>
+    <td class="fixed">check_online</td>
+    <td><i>None</i></td>
+    <td>If present, should be the URL of a webpage that the program will try to fetch to determine if there is a network connection available - useful for dialup users that may not be always online.<br>A good value for this is <a href="http://www.google.com">http://www.google.com</a>.</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">sleep_time</td>
+    <td>5</td>
+    <td>	Number of minutes to wait before re-checking feeds. If the value is 0, then the program will exit after checking all feeds, instead of waiting to start again (batch mode).</td>
+  </tr>
+  <tr>
+    <td class="fixed">offline</td>
+    <td>0</td>
+    <td>If set to 1, the program won't try to fetch any data from the internet, using cached versions instead. Useful for debugging.</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">debug</td>
+    <td>0</td>
+    <td>If set to 1, logging becomes more verbose. Useful for debugging.</td>
+  </tr>
+  <tr>
+    <td class="fixed">workers</td>
+    <td>10</td>
+    <td>Number of threads to use simultaneusly. Bigger numbers should mean better performance, but with increased memory and CPU use.<br>Dialup users may want to change this to 3, since more threads may also mean more timeout errors for them.</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">can_pipe</td>
+    <td>0</td>
+    <td><p>Enables <tt>pipe://</tt> URI support. When set to "1", the program will accept feed URLs that start with <tt>pipe://</tt> - an arbitrary protocol name used to tell <tt>Newspipe</tt> that to get the feed data, it should run the program or command after the <tt>pipe://</tt> and use its standard output as feed data.</p>
+    <p>Example:</p>
+    <tt>&lt;outline ... xmlURL="pipe://python.exe scrape_site.py" /&gt;</tt>
+    <p>tells <tt>Newspipe</tt> to run</p>
+    <tt>python.exe scrape_site.py</tt>
+    <p>and capture its standard output as feed data. This allows you to use screen-scraping scripts to generate feed data from sites that have no <a href="#rss">RSS</a> feeds, and since it makes <tt>Newspipe</tt> invoke external programs, it is disabled by default as a security measure.
+    </td>
+  </tr>   
+  <tr>
+    <td class="fixed">encoding</td>
+    <td>utf-8</td>
+    <td><p> Determines the unicode encoding to use when composing the emails (you can find the list of possible values at <a href="http://www.python.org/dev/doc/devel/lib/standard-encodings.html">this page</a>) </p></td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">proxy</td>
+    <td>None</td>
+    <td><p> Determines the address and port of the proxy server to go trough, separated by a colon. For example: <tt>http://192.168.0.1:8080</tt></p></td>
+  </tr>
+  <tr>
+    <td class="fixed">threading</td>
+    <td>0</td>
+    <td><p> If set to "1", <tt>Newspipe</tt> will add the <tt>References</tt> and <tt>In-Reply-To</tt> headers to emails, to allow threading of the messages </p></td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">subject</td>
+    <td>None</td>
+    <td><p> The value of this parameter will be added at the begining of the subject of every email, so that they can be identified and filtered by mail programs that can't access the mail headers </p></td>
+  </tr>
+  <tr>
+    <td class="fixed">smtp_auth</td>
+    <td>0</td>
+    <td><p> If set to "1", <tt>Newspipe</tt> will use SMTP Authorization when connecting to the SMTP server</p></td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">smtp_user</td>
+    <td>None</td>
+    <td><p> If <tt>smtp_auth</tt> is set to "1", the value of this setting will be used as the username when connecting to the smtp server </p></td>
+  </tr>
+  <tr>
+    <td class="fixed">smtp_pass</td>
+    <td>None</td>
+    <td><p> If <tt>smtp_auth</tt> is set to "1", the value of this setting will be used as the password when connecting to the smtp server </p></td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">multipart</td>
+    <td>on</td>
+    <td>If set to <tt>on</tt>, <tt>Newspipe</tt> will include a plaintext version of item contents as well as an HTML version.<p>Setting this to <tt>off</tt> sends <i>only</i> HTML and images, and might be desirable if you want to receive slightly smaller messages - or if you use a mailer/webmail that has trouble with alternative versions of the same message (<a href="http://www.gmail.com">Gmail</a>, for instance, defaults to showing plaintext versions of messages).</td>
+  </tr>
+  <tr>
+    <td class="fixed">reverse</td>
+    <td>0</td>
+    <td><p> If set to "1", <tt>Newspipe</tt> sends the emails in reversed order</p></td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">send_method</td>
+    <td>SMTP</td>
+    <td><p> Determines the method that <tt>Newspipe</tt> will use to send the emails. Possible values:
+        <ul>
+            <li> SMTP: Send the emails via an SMTP server </li>
+            <li> PROCMAIL: Invoke a PROCMAIL script or program for each email, sending the email's text through it's standard input </li>
+            <li> BOTH: Combines the two previous options, sending each email trough the smtp server and the procmail script </li>
+        </ul>
+    </p></td>
+  </tr>
+  <tr>
+    <td class="fixed">procmail</td>
+    <td>None</td>
+    <td><p> Full path to a procmail script that will be invoqued for each email when <tt>SEND_METHOD</tt> is <tt>PROCMAIL</tt> or <tt>BOTH</tt> </p></td>
+  </tr>
+</table>
+ 
+<H3>OPML Options</H3>
+
+<p>Since <a href="#opml">OPML</a> is an hierarchical format, you can have multiple <tt>outline</tt> items nested inside each other. Some <tt>outline</tt> items will denote single feeds, and some will group related sets of feeds together.</p>
+<p><tt>Newspipe</tt> allows you to use any sort of layout you like, and lets you set feed options on a group basis or for a single feed:</p>
+
+<p>Example opml file:</p>
+
+<p class="opmlcode">
+&nbsp;&nbsp;&nbsp;<tt>&lt;?<span class="tag">xml</span> <span class="attr">version</span>=<span class="text">"1.0"</span> <span class="attr">encoding</span>=<span class="text">"ISO-8859-1"</span>?></tt><br/>
+&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">opml</span> <span class="attr">version</span>=<span class="text">"1.1"</span>></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">head</span>></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">title</span>></tt>test.opml<tt>&lt;/title></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">ownerName</span>></tt>Your name goes here<tt>&lt;/ownerName></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">ownerEmail</span>></tt>your.name@example.com<tt>&lt;/ownerEmail></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">ownerMobile</span>></tt>your.phone@example.com<tt>&lt;/ownerEmail></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;/<span class="tag">head</span>></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">body</span>></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">outline</span> <span class="attr">text</span>=<span class="text">"General"</span>></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">outline</span> <span class="attr">text</span>=<span class="text">"dive into mark"</span><br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">description</span>=<span class="text">"A lot of effort went into making this effortless."</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">htmlUrl</span>=<span class="text">"http://diveintomark.org"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">xmlUrl</span>=<span class="text">"http://diveintomark.org/xml/atom.xml"</span> /></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">outline</span> <span class="attr">text</span>=<span class="text">"The Tao of Mac"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">description</span>=<span class="text">"mac.against.org"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">htmlUrl</span>=<span class="text">"http://the.taoofmac.com/"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">xmlUrl</span>=<span class="text">"http://the.taoofmac.com/space/RecentChanges?format=rss"</span> /></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;/<span class="tag">outline</span>></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">outline</span> <span class="attr">text</span>=<span class="text">"1 Email per feed"</span> <span class="attr">digest</span>=<span class="text">"1"</span>></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">outline</span> <span class="attr">text</span>=<span class="text">"The Scobleizer Weblog"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">description</span>=<span class="text">"Human Aggregator of geek life"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">htmlUrl</span>=<span class="text">"http://radio.weblogs.com/"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">xmlUrl</span>=<span class="text">"http://radio.weblogs.com/0001011/rss.xml"</span> /></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">outline</span> <span class="attr">text</span>=<span class="text">"Boing Boing Blog"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">description</span>=<span class="text">"The Blog of Wonderful things"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">htmlUrl</span>=<span class="text">"http://boingboing.net"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">xmlUrl</span>=<span class="text">"http://boingboing.net/rss.xml"</span> /></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">outline</span> <span class="attr">text</span>=<span class="text">"1 email per feed, but without titles"</span> <span class="attr">titles</span>=<span class="text">"0"</span>></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">outline</span> <span class="attr">text</span>=<span class="text">"Scripting News"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">description</span>=<span class="text">"All scripting, all the time, forever."</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">htmlUrl</span>=<span class="text">"http://www.scripting.com/"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">xmlUrl</span>=<span class="text">"http://www.scripting.com/rss.xml"</span> /></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;/<span class="tag">outline</span>></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;/<span class="tag">outline</span>></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">outline</span> <span class="attr">text</span>=<span class="text">"Download the linked page"</span> <span class="attr">download_link</span>=<span class="text">"1"</span>></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">outline</span> <span class="attr">text</span>=<span class="text">"ongoing"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">description</span>=<span class="text">"Ongoing fragmented essay by Tim Bray."</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">htmlUrl</span>=<span class="text">"http://www.tbray.org/ongoing/"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">xmlUrl</span>=<span class="text">"http://www.tbray.org/ongoing/ongoing.rss"</span> /></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;/<span class="tag">outline</span>></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">outline</span> <span class="attr">text</span>=<span class="text">"Plain text emails"</span> <span class="attr">textonly</span>=<span class="text">"1"</span>></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;<span class="tag">outline</span> <span class="attr">text</span>=<span class="text">"Wired News"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">description</span>=<span class="text">"Wired News"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">htmlUrl</span>=<span class="text">"http://www.wired.com"</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">xmlUrl</span>=<span class="text">"http://www.wired.com/news/feeds/rss2/0,2610,,00.xml"</span> /></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;/<span class="tag">outline</span>></tt><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>&lt;/<span class="tag">body</span>></tt><br/>
+&nbsp;&nbsp;&nbsp;<tt>&lt;/<span class="tag">opml</span>></tt><br/>
+</p>
+
+<table class="flat">
+  <tr>
+    <th>Attribute</th><th>Default</th><th>Notes</th>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">text</td>
+    <td><i>None</i></td>
+    <td>REQUIRED - Title of the feed, to be used in the log files.</td>
+  </tr>
+  <tr>
+    <td class="fixed">htmlUrl</td>
+    <td><i>None</i></td>
+    <td>REQUIRED - URL of the site related to this feed. It's used in the "Home" link in the footer of each email.</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">xmlUrl</td>
+    <td><i>None</i></td>
+    <td>REQUIRED - URL of the RSS/Atom feed</td>
+  </tr>
+  <tr>
+    <td class="fixed">digest</td>
+    <td>0</td>
+    <td>If set to "1", all the new or modified items in the feed will be grouped to a single email.</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">titles</td>
+    <td>1</td>
+    <td>If set to "0", the digest email will have a more compact format, without titles, separator, author name and date-time of each item. This setting only works when <tt>digest="1"</tt> and is useful in feeds that don't have titles in their items, like scripting.com.</td>
+  </tr>
+    <tr>
+    <td class="fixed">download_link</td>
+    <td>0</td>
+    <td>If set to "1", Newspipe will download the webpage linked by each item, and use the html code of that page instead of the text of the item. This is useful to get full text entries of feeds that only have exerpts. Use with caution, the resulting emails can get really big when the linked webpage has too many images, or long text (like Slashdot's).</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">diff</td>
+    <td>1</td>
+    <td>If set to "1", <tt>Newspipe</tt> will compare the text of each item with the previous version (if any) stored in the cache, and will highlight any <font color="#337700"><b>additions</b></font> and <font color="#FF0000"><STRIKE>deletions</STRIKE></font> in the text. You can disable this feature seting this parameter to "0" if it gets too distracting.</td>
+  </tr>
+  <tr>
+    <td class="fixed">check_text</td>
+    <td>1</td>
+    <td>When this parameter is set to "0", Newspipe will not re-send items previously seen, even if the text of the item has changed. When set to "1", old items that have any change in their text will be treated as new items, and will be sent by email.</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">delay</td>
+    <td>60</td>
+    <td>Number of minutes to wait between checks to this feed.</td>
+  </tr>
+  <tr>
+    <td class="fixed">textonly</td>
+    <td>0</td>
+    <td>If set to "1", the emails of this feed will be in plain-text format, instead of HTML.</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">mobile</td>
+    <td>0</td>
+    <td>If set to "1" and the OPML file has a <tt>ownerMobile</tt> field, a text-only copy of the feed items will be sent to <tt>ownerMobile</tt> (useful for PDAs or MMS-enabled mobile phones)</td>
+  </tr>
+  <tr>
+    <td class="fixed">auth</td>
+    <td><i>None</i></td>
+    <td>Contains an optional <tt>username:password</tt> string for basic HTTP authentication (known to work with <a href="http://www.gmail.com">Gmail</a> <a href="#Atom">Atom</a> feeds.)</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">download_images</td>
+    <td>1</td>
+    <td>If set to "0", Newspipe won't download any images, and the emails will link to them externally.</td>
+  </tr>
+  <tr>
+    <td class="fixed">check_time</td>
+    <td><i>None</i></td>
+    <td>The value of this parameter should be a time range in the form <tt>"10:00 to 21:00"</tt>. If present, <tt>Newspipe</tt> will only download and check this feed when the current time is inside the indicated time range.</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">mobile_time</td>
+    <td>None</td>
+    <td>The value of this parameter should be a time range in the form <tt>"10:00 to 21:00"</tt>, and only has effect when the <tt>mobile</tt> option is set to "1". If present, <tt>Newspipe</tt> will send the text email to the secondary address only when the current time is inside the indicated time range. For example, you can set this option to <tt>"8:00 - 21:00"</tt> to avoid receiving alerts in your phone during the night</td>
+  </tr>
+  <tr>
+    <td class="fixed">remove</td>
+    <td><i>None</i></td>
+    <td>The value in this parameter should be a regular expression. Any text that matches this regular expression in the feed will be removed (specially usefull to remove ads). For example, you can use this:
+        <br/>
+        <br/>
+        <tt>remove="&amp;lt;a .+? http://feeds.feedburner.com/ .+? iBag\?a= .+? &amp;lt;/a&amp;gt;"</tt>
+        <br/>
+        <br/>
+        to remove adds from Boing Boing (and probably from other "feedburner enhaced" feeds)
+    </td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">owneremail</td>
+    <td>None</td>
+    <td>With this attribute you can override the OPML's OwnerEmail value.</td>
+  </tr>
+</table>
+
+<p>
+Any attribute that is unknown by Newspipe will be turned into a mail header of the form: <tt>X-Custom-<b>NAME</b>: <b>VALUE</b></tt>, that you can use to filter or classify 
+the emails in your mail client. For example, if you put something like this
+in your opml file:
+</p>
+
+<pre>
+    &lt;outline text="Name of the blog" <font color="red">importance="High"</font> xmlUrl="http://example.com" />
+</pre>
+
+<p>
+All the emails produced for that blog will carry a mail header of the form:
+</p>
+
+<pre>
+    X-Custom-importance: High
+</pre>
+
+<p>
+Also, you can have the same effect with something like this:
+</p>
+
+<pre>
+    &lt;outline text="Important Blogs" <font color="red">importance="High"</font>>
+        &lt;outline text="First one" xmlUrl="http://example.com" ... />
+        &lt;outline text="Second one" xmlUrl="http://example.com" ... />
+        &lt;outline text="Third one" xmlUrl="http://example.com" ... />
+    &lt;/outline>
+</pre>
+
+<p>
+In this later case, the three items "inherit" the parent's attribute, and all of them will have the same extra mail header. This is a useful way to group feeds together when 
+you want to filter or process them in some way with your mail client.
+</p>
+
+<a name="mailheaders"></a>
+<H2>Mail Headers</H2>
+
+<p><tt>Newspipe</tt> adds a number of mail headers to messages that you can use to filter or classify them into folders, and which also provide some useful information as to what it has done to parse the feed:</p>
+
+<table class="flat">
+  <tr>
+    <th>Header</th><th>Values & Meaning</th>
+  </tr>
+  <tr>
+    <td class="fixed">X-Channel-Feed</td><td>feed URL (same as the <tt>xmlURL</tt> attribute in the OPML file)</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">X-NewsPipe-Version</td><td>version information about <tt>Newspipe</tt>, <tt>Python</tt> and the platform</td>
+  </tr>
+  <tr>
+    <td class="fixed">X-Channel-Title</td><td>the feed title</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">X-Channel-Description</td><td>the feed description</td>
+  </tr>
+  <tr>
+    <td class="fixed">List-Id</td><td>Title and xml url of the feed</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">Content-Location</td><td>Url of the item</td>
+  </tr>
+</table>
+
+<p>The following headers will only be present if the .ini parameter <tt>threading</tt> is present and set to "1".</p>
+
+<table class="flat">
+  <tr>
+    <th>Header</th><th>Values & Meaning</th>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">In-Reply-To</td><td>Last <tt>Message-ID</tt> generated from this feed (to simulate e-mail threading)</td>
+  </tr>
+  <tr>
+    <td class="fixed">References</td><td>List of <tt>Message-ID</tt>s generated from this feed (to simulate e-mail threading)</td>
+  </tr>
+</table>
+
+<p>The following headers will only be present if the program is running in DEBUG mode.</p>
+
+<table class="flat">
+  <tr>
+    <th>Header</th><th>Values & Meaning</th>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">X-Item-Attributes</td><td>attributes parsed by <tt>Newspipe</tt> while building the message</td>
+  </tr>
+  <tr>
+    <td class="fixed">X-Item-Text-Key</td><td>feed attribute that contained the item text </td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">X-Newspipe-Version</td><td>program version number and revision</td>
+  </tr>
+    <td class="fixed">X-Item-Modified</td><td>Whether <tt>Newspipe</tt> detected changes to the feed item (set to "Unknown" for digest feeds)</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">X-Item-Hash-Link</td><td><tt>md5</tt>-encoded item link</td>
+  </tr>
+  <tr>
+    <td class="fixed">X-Item-Hash-Feed</td><td><tt>md5</tt>-encoded feed URL (<tt>xmlUrl</tt>)</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">X-Item-Hash-Subject</td><td><tt>md5</tt>-encoded <tt>Subject</tt></td>
+  </tr>
+  <tr>
+    <td class="fixed">X-Item-Hash</td><td><tt>md5</tt>-encoded item URL</td>
+  </tr>
+  <tr class="odd">
+    <td class="fixed">X-Channel-X-Cache-Result</td><td>whether the data was downloaded ("Downloaded") or obtained from a <tt>pipe://</tt> feed ("From process")</td>
+  </tr>
+</table>
+
+<a name="acknowledgements"></a>
+<H2>Acknowledgements</H2>
+<p>
+<ul>
+<li><a href="http://the.taoofmac.com/space/">Rui Carmo</a>, for the initial logo, writing this documentation, for his Linux and MacOS testing and a lot of suggestions and bug reports.</li>
+<li><a href="http://www.litux.org">Bruno David Rodrigues</a>, for a number of <tt>MIME</tt> and <tt>UTF-8</tt> fixes, e-mail threading headers and memory usage debugging.</li>
+<li><a href="http://www.diveintomark.org/">Mark Pilgrim</a>, author of <tt>feedparser.py</tt> (<a href="http://www.feedparser.org/">download feedparser.py</a>)</li> 
+<li>
+    <a href="http://www.aaronsw.com/">Aaron Swartz</a>, author of <tt>html2text.py</tt> (<a href="http://www.aaronsw.com/2002/html2text">download html2text.py</a>)</p>
+    <p> Aaron has program similar to <tt>Newspipe</tt> called <a href="http://www.aaronsw.com/2002/rss2email/">rss2email</a>. I've never tried it myself, but you should give it a try if you are interested in this "RSS to Email thing". Oddly enough, I found out about it AFTER using <tt>html2text.py</tt> for several months in <tt>Rss2pop3</tt> (the predecessor of <tt>Newspipe</tt>). </p>
+</li>
+<li><a href="http://www.rupa.com/">Rupa Schomaker</a>, for a couple of patches and comments.</li>
+<li><tt>Lwiechec</tt> (real name unknown) for the SMTP authentication patch</li>
+<li><tt>David Malkovsky</tt> for the Proxy support code</li>
+<li>Newspaper image from <a href="http://freetubes.com/">Free Tubes</a>, used with permission.</li>
+</ul>
+
+<a name="contact"></a>
+<H2>Contact the Author</H2>
+<p>You can contact the author of <tt>Newspipe</tt> trough email at <a href="mailto:reyesric@ufasta.edu.ar">reyesric@ufasta.edu.ar</a></p>
+<p>Any suggestion, bug reports, or comments are most welcome.</p>
+
+<a name="references"></a>
+<H2>References</H2>
+
+<ul>
+<li><a name="rss"></a><a href="http://blogs.law.harvard.edu/tech/rss">RSS 2.0 Specification</a></li>
+<li><a name="atom"></a><a href="http://www.atomenabled.org/">Atom Enabled</a></li>
+<li><a name="opml"></a><a href="http://www.opml.org/spec">OPML Specification</a>
+<li><a name="markdown"></a><a href="http://daringfireball.net/projects/markdown/">Markdown Homepage</a>
+</ul>
+
+<a name="changelog"></a>
+<H2>Changelog</H2>
+
+<ul>
+    <li class="release"> v1.1.9 &nbsp; 17-July-2005
+        <ul class="release_text">
+            <li> - Eliminated the option --send_immediate because of concurrency problems </li>
+            <li> + New .ini parameter SEND_METHOD: possible values SMTP, PROCMAIL, BOTH</li>
+            <li> + New .ini parameter PROCMAIL: path to a procmail script that will be invoqued for each email when SEND_METHOD is PROCMAIL or BOTH</li>
+            <li> + New .ini parameter REVERSE: possible values 0 or 1. When set to 1, Newspipe sends the emails in reverse order.</li>
+            <li> + Applied to patches from <b>Rupa Schomaker</b>:
+                <ul>
+                  <li> + Support overriding ownerEmail on a per-outline basis (with a new OPML parameter OWNEREMAIL)</li>
+                  <li> + Support including the link for an enclosure tag on each email</li>
+                </ul>
+            </li>
+            <li> * Fixed a bug related to accented chars in the HomeDir path</li>
+            <li> * Fixed bug on feeds without description</li>
+            <li> * Fixed bug on feeds with &amp;lt; and &amp;rt; entities in the item text</li>
+        </ul>
+    </li>
+    <li class="release"> v1.1.8 &nbsp; 06-April-2005
+        <ul class="release_text">
+            <li> New opml attribute "remove". The value should be a regular expression, and Newspipe will eliminate any text that matches that regular expression from the feeds text. Usefull to remove ads from feeds</li>
+            <li> SMTP Authorization support<b>(Thanks to lwiechec for this)</b></li>
+            <li> New OPML head tags: fromEmail and fromName <b>(Thanks to lwiechec for this too)</b></li>
+            <li> Newspipe can now send the emails to multiple recipients, separating the email address es with ","</li>
+        </ul>
+    </li>
+    <li class="release"> v1.1.7 &nbsp; 20-March-2005
+        <ul class="release_text">
+            <li> Now all the unknown attributes in the OPML file will be turned into X-Custom-... headers in the emails, for sorting and filtering purposes. </li>
+        </ul>
+    </li>
+    <li class="release"> v1.1.6 &nbsp; 20-February-2005
+        <ul class="release_text">
+            <li> New opml parameter <tt>check_time</tt> that controls the time range when the feed will be checked (for example, "7am - 22:00") </li>
+            <li> New opml parameter <tt>mobile_time</tt> that controls the time range when <tt>Newspipe</tt> will send the mobile versions of emails (for example, "16:30 - 10:30pm") </li>
+            <li> New .ini parameter <tt>subject</tt>, can be used to prepend a string to the subject of every email </li>
+        </ul>
+    </li>
+    <li class="release"> v1.1.5 &nbsp; 05-February-2005 
+        <ul class="release_text">
+            <li> Added <tt>List-Id</tt> and <tt>Content-Location</tt> headers, as suggested in <a href="https://sourceforge.net/tracker/index.php?func=detail&aid=1109286&group_id=114820&atid=669525"> this feature request</a> </li>
+            <li> The <tt>References</tt> and <tt>In-Reply-To</tt> will only be present when the new <tt>threading</tt> parameter is set to 1 in the .ini file. It's been reported that they annoy some users :) </li>
+            <li> Removed some debugging headers. They will only be included in the mails when the program is run in DEBUG mode. </li>
+            <li> Try to use the feed author email as From address, when possible </li>
+            <li> Fixed typo in parameters: immediate </li>
+        </ul>
+    </li>
+    <li class="release"> v1.1.4 &nbsp; 26-December-2004
+        <ul class="release_text">
+            <li> Support for proxy servers, controlled with the new .ini file parameter: <tt>proxy</tt> <b>(Thanks to David Malkovsky for this)</b></li>
+            <li> New command line parameter: <tt>--inifile</tt> to control the location and name of the .ini file </tt>
+            <li> Now all the parameters in the .ini file can be overridden with command line parameters. (use the --help parameter to see a list of available options) </li>
+        </ul>
+    </li>
+    <li class="release"> v1.1.3 &nbsp; 21-December-2004
+        <ul class="release_text">
+            <li> Fixed a bug resolving relative urls, introduced in v1.1.2</li>
+        </ul>
+    </li>
+    <li class="release"> v1.1.2 &nbsp; 13-December-2004
+        <ul class="release_text">
+            <li> Fixed the stupid error when Newspipe.py wasn't run from the same folder it's installed in</li>
+            <li> New OPML parameter: download_images. It defaults to "1". If set to "0", Newspipe won't download any images, and the emails will link to them externally </li>
+        </ul>
+    </li>
+    <li class="release"> v1.1.1 &nbsp; 05-December-2004
+        <ul class="release_text">
+            <li> Added an option to set the text encoding of the emails, trough the .ini parameter "encoding" (default: utf-8) </li>
+            <li> Added support for use of the module dummy_threading, for those installations where the "real" threading module is not available </li>
+        </ul>
+    </li>
+    <li class="release"> v1.1 &nbsp; 17-October-2004
+        <ul class="release_text">
+            <li> Better handling of socket exceptions when downloading images </li>
+            <li> Indicate platform name and python version in the UserAgent header </li>
+            <li> Added Python version and platform information to X-Newspipe-Version header </li>
+            <li> Added basic authentication support, based on <a href="http://jonasgalvez.com/blog/2004-10/gmail-atom-proxy">http://jonasgalvez.com/blog/2004-10/gmail-atom-proxy</a> </li>
+	        <li> Inline images now display correctly in Thunderbird (a single image only, non-digest messages) </li>
+            <li> Fixed Thunderbird rendering of both single and digest feeds </li>
+            <li> Added "multipart" setting to disable plaintext section (should help with webmails) </li>
+            <li> Full encoding support - exaustivly tested with iso-8859-1, -15 and UTF-8 blogs </li>
+            <li> Full Multipart support - works perfectly with Apple Mail, Thunderbird, Outlook Express, IMP (Horde) and Evolution. Now you can click on "choose alternative part" in your email client, and you can save the pictures with the original names </li>
+            <li> Quick and dirty patch to relate posts with each others with Message-ID header - allows you to see each feed in a separate thread </li>
+            <li> Fix for smtp timeouts - now it retries it later </li>
+            <li> Fix for CTRL-C behaviour </li>
+        </ul>
+    </li>
+    <li class="release"> v1.0.3 &nbsp; 05-September-2004
+		<ul class="release_text">
+			<li> Fixed exception when the remote server doesn't include a Date http header.</li>
+			<li> Better handling of file expirations and purging.</li>
+			<li> html2text.py: New version 2.21</li>
+			<li> Fixed overlapping items in digest feeds (added br clear=all tag). <b>(by Rui)</b></li>
+			<li> Fixed image/121212121 MIME types (such as those from the Engadget feed) by using the Content-Type provided by the cache object (which in turn is the one provided by the web server we got the images from).<b>(by Rui)</b></li>
+			<li> Fixed the exception "TypeError: string indices must be integers" when sending text-only messages.</li>
+			<li> Better handling of exceptions when purging the cache, due to misterious exceptions on the pickle module.</li>
+			<li> When an item has multiple instances of a single image (like TaoofMac's) download only one file and use it as many times as needed.</li>
+		</ul>
+	</li>
+	<li class="release"> v1.0.1b &nbsp; 02-August-2004 
+		<ul class="release_text">
+			<li>manual.html updated to reflect the changes in v1.0.1.</li>
+		</ul>
+	</li>
+	<li class="release"> v1.0.1 &nbsp; 01-August-2004
+		<ul class="release_text">
+			<li> HTML to Text conversion generates only one footnote for each link/image</li>
+			<li> When downloading images, retry up to 3 times on timeouts </li>
+			<li> Store all log, cache and data files at $HOME/.newspipe when running on UNIX, or $APPDATA/.newspipe when running on Windows</li>
+			<li> Bugfix 2002: Parsing error in http://food.against.org/index.rdf </li>
+			<li> Added "sender" override</li>
+			<li> Changed mail processing to allow for any sender/destination </li>
+			<li> Added support for sending a "mobile" version to an alternate e-mail address:
+				<ul>
+					<li>"mobile" attribute in OPML determines which feeds are copied</li>
+					<li>ownerMobile value at top of OPML determines alternate e-mail address (point it to your MMS or mobile phone address)</li>
+				</ul></li>
+			<li> Refactoring of error handling in image download</li>
+		</ul>
+	</li>
+	<li class="release"> v1.0 &nbsp; 21-July-2004 
+		<ul class="release_text">
+			<li>Initial release.</li>
+		</ul>
+	</li>
+</ul>
+
+</div>
+</body>
+</html>

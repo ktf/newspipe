@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<opml version="1.1">
+	<head>
+		<title>test.opml</title>
+		<ownerName>Giulio Eulisse</ownerName>
+		<ownerEmail>giulio.eulisse@gmail.com</ownerEmail>
+		</head>
+	<body>
+		<outline text="General">
+			<outline text="The Tao of Mac" description="mac.against.org" htmlUrl="http://the.taoofmac.com" xmlUrl="http://the.taoofmac.com/space/RecentChanges?format=rss" />
+			<outline text="The Tao of Mac" description="mac.against.org" htmlUrl="http://the.taoofmac.com" xmlUrl="http://the.taoofmac.com/space/RecentChanges?format=rss" />
+               <outline text="Scripting News" 
+                  description="All scripting, all the time, forever." 
+                  htmlUrl="http://www.scripting.com/" 
+                  xmlUrl="http://www.scripting.com/rss.xml" />
+	    </outline>
+	</body>
+</opml>
