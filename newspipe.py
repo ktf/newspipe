@@ -99,6 +99,8 @@ CONFIG_DEFAULTS = {
     'smtp_auth' : '0',
     'smtp_user' : '',
     'smtp_pass' : '',
+    'smtp_port' : '25',
+    'smtp_tls'  : 0,
     'from_address' : '',
     'send_method': 'smtp',
     'procmail': '',
@@ -1100,9 +1102,11 @@ def LeerConfig():
     parser.add_option("-r", "--proxy", dest="proxy", help="addess and port of the proxy server to use")
     parser.add_option("-a", "--threading", action="store_const", const="1", dest="threading", help="include threading headers in the emails")
     parser.add_option("", "--subject", dest="subject", help="add a fixed text to the subject of every message")
-    parser.add_option("", "--smtp_authentication", action="store_const", const="0", dest="smtp_auth", help="authenticate with SMTP server")
+    parser.add_option("", "--smtp_authentication", action="store_const", const="1", dest="smtp_auth", help="authenticate with SMTP server")
     parser.add_option("", "--smtp_auth_user", dest="smtp_user", help="SMTP username used for authentication")
     parser.add_option("", "--smtp_auth_pass", dest="smtp_pass", help="SMTP password used for authentication")
+    parser.add_option("", "--smtp_port", dest="smtp_port", help="TCP port on which the SMTP server listen")
+    parser.add_option("", "--smtp_tls", action="store_const", const="1", dest="smtp_tls", help="SMTP server uses TLS")
     parser.add_option("", "--send_method", dest="send_method", help="Method used to send the resulting emails. Possible values: SMTP, PROCMAIL, BOTH")
     parser.add_option("", "--procmail", dest="procmail", help="Path of the procmail script, used when SEND_METHOD=PROCMAIL or BOTH")
     parser.add_option("", "--reverse", action="store_const", const="1", dest="reverse", help="reverse the order of emails as they are sent")
@@ -1154,14 +1158,17 @@ def LeerConfig():
     return result
 # end def
 
-
-def EnviarEmails(msgs, method, server, auth, auth_user, auth_pass, procmail, reverse):
+def EnviarEmails(msgs, method, server, auth, auth_user, auth_pass, procmail, reverse, port, tls, sender):
     if msgs:
         if reverse:
             msgs.reverse()
         
         if method.lower() in ('smtp', 'both'):
-            smtp = smtplib.SMTP(server)
+            smtp = smtplib.SMTP(server, port)
+            if tls:
+                smtp.ehlo()
+                smtp.starttls()
+                smtp.ehlo()
             # authenticate with SMTP server when there's need to
             if auth:
                 smtp.login(auth_user,auth_pass);
@@ -1173,7 +1180,7 @@ def EnviarEmails(msgs, method, server, auth, auth_user, auth_pass, procmail, rev
                 if msg == None: 
                     continue
     
-                fromaddr = msg['From']
+                fromaddr = sender
     
                 r = re.compile('<(.+?)>')
                 toaddr = r.findall(msg['To'])
@@ -1193,15 +1200,21 @@ def EnviarEmails(msgs, method, server, auth, auth_user, auth_pass, procmail, rev
     
                 if count % 10 == 0:
                     # close the connection and reconnect every 10 messages
+                    smtp.rset()
                     smtp.quit()
-                    smtp = smtplib.SMTP(server)
+                    smtp = smtplib.SMTP(server, port)
+                    if tls:
+                        smtp.ehlo()
+                        smtp.starttls()
+                        smtp.ehlo()
                     # authenticate with SMTP server when there's need to
                     if auth:
                         smtp.login(auth_user,auth_pass);
                     # end if
                 # end if
             # end for
-            
+
+            smtp.rset()
             smtp.quit()
             if count != len(msgs):
                 note = " (" + str(len(msgs)-count) +" failed)"
@@ -1806,7 +1819,7 @@ def MainLoop():
                     # end while
 
                     try:
-                        EnviarEmails (emails, config['send_method'], config['smtp_server'], config['smtp_auth'] == '1',config['smtp_user'],config['smtp_pass'], config['procmail'], config['reverse'] == '1')
+                        EnviarEmails (emails, config['send_method'], config['smtp_server'], config['smtp_auth'] == '1',config['smtp_user'],config['smtp_pass'], config['procmail'], config['reverse'] == '1', config['smtp_port'], config['smtp_tls'], config['sender'])
                     except KeyboardInterrupt:
                         raise
                     except Exception, e:
