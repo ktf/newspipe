@@ -154,19 +154,19 @@ class MyLog:
     # end def
     
     def debug(self, msg, *args, **kwargs):
-        msg = self.memory() + msg
+        msg = self.memory() + repr(msg)
         log.debug(msg, *args, **kwargs)
     def info(self, msg, *args, **kwargs):
-        msg = self.memory() + msg
+        msg = self.memory() + repr(msg)
         log.info(msg, *args, **kwargs)
     def warning(self, msg, *args, **kwargs):
-        msg = self.memory() + msg
+        msg = self.memory() + repr(msg)
         log.warning(msg, *args, **kwargs)
     def exception(self, msg, *args, **kwargs):
-        msg = self.memory() + msg
+        msg = self.memory() + repr(msg)
         log.exception(msg, *args, **kwargs)
     def error(self, msg, *args, **kwargs):
-        msg = self.memory() + msg
+        msg = self.memory() + repr(msg)
         log.error(msg, *args, **kwargs)
 
 
@@ -1154,7 +1154,6 @@ def LeerConfig():
         
     if not (result['send_method'].lower() in ('smtp', 'procmail', 'both')):
         raise ValueError ('The value of the parameter SEND_METHOD must be SMTP, PROCMAIL or BOTH')
-            
     return result
 # end def
 
@@ -1615,7 +1614,7 @@ class FeedWorker (_threading.Thread):
                 encoding = config['encoding']
                 include_threading = config['threading'] == '1'
                 subject_prefix = config['subject']
-
+                
                 for item in items:
                     self.email_queue.put(item.GetEmail(envio, email_destino, format, encoding, include_threading, subject_prefix, config['from_address']))
                 # end for
